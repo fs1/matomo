@@ -46,12 +46,13 @@ describe("SegmentSelectorEditorTest", function () {
         await page.evaluate(function() {
             $('.segmentList .editSegment:first').click()
         });
-        await page.waitFor(500);
+        await page.waitForNetworkIdle();
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('2_segment_editor_update');
     });
 
     it("should start editing segment name when segment name edit link clicked", async function() {
         await page.click('.segmentEditorPanel .editSegmentName');
+        await page.waitFor(250); // animation
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('3_segment_editor_edit_name');
     });
 
@@ -78,6 +79,7 @@ describe("SegmentSelectorEditorTest", function () {
     it("should open blank segment editor when create new segment link is clicked", async function() {
         await page.click('.segmentationContainer .title');
         await page.click('.add_new_segment');
+        await page.waitForNetworkIdle();
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('8_segment_editor_create');
     });
 
@@ -130,6 +132,7 @@ describe("SegmentSelectorEditorTest", function () {
         await page.evaluate(function () {
             $('button.saveAndApply').click();
         });
+        await page.waitForNetworkIdle();
 
         await page.click('.segmentationContainer');
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('saved');
@@ -143,6 +146,7 @@ describe("SegmentSelectorEditorTest", function () {
 
     it("should correctly load the new segment's details when the new segment is edited", async function() {
         await page.click('.segmentList li[data-idsegment="4"] .editSegment');
+        await page.waitForNetworkIdle();
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('saved_details');
     });
 
@@ -152,7 +156,7 @@ describe("SegmentSelectorEditorTest", function () {
             $('input.edit_segment_name').val('').change();
         });
         await page.type('input.edit_segment_name', 'edited segment');
-        page.click('.segmentRow0 .segment-or:first'); // click somewhere else to save new name
+        await (await page.jQuery('.segmentRow0 .segment-or:first')).click(); // click somewhere else to save new name
 
         await selectFieldValue(page, '.segmentRow0 .segment-row:first .metricMatchBlock', 'Is not');
         await selectFieldValue(page, '.segmentRow0 .segment-row:last .metricMatchBlock', 'Is not');
@@ -167,35 +171,42 @@ describe("SegmentSelectorEditorTest", function () {
         await page.evaluate(function () {
             $('button.saveAndApply').click();
         });
+        await page.waitFor(500); // animation to show confirm
+
         expect(await page.screenshotSelector('.modal.open')).to.matchImage('update_confirmation');
     });
 
     it("should correctly update the segment when saving confirmed", async function() {
         var elem = await page.jQuery('.modal.open .modal-footer a:contains(Yes):visible');
         await elem.click();
+        await page.waitForNetworkIdle();
         await page.click('.segmentationContainer');
+        await page.waitForNetworkIdle();
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('updated');
     });
 
     it("should show the updated segment after page reload", async function() {
         await page.reload();
         await page.click('.segmentationContainer .title');
-        expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('updated_reload');
+        expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('updated');
     });
 
     it("should correctly load the updated segment's details when the updated segment is edited", async function() {
         await page.click('.segmentList li[data-idsegment="4"] .editSegment');
+        await page.waitForNetworkIdle();
         expect(await page.screenshotSelector(selectorsToCapture)).to.matchImage('updated_details');
     });
 
     it("should correctly show delete dialog when the delete link is clicked", async function() {
         await page.click('.segmentEditorPanel a.delete');
+        await page.waitFor(500); // animation
         expect(await page.screenshotSelector('.modal.open')).to.matchImage('deleted_dialog');
     });
 
     it("should correctly remove the segment when the delete dialog is confirmed", async function() {
         var elem = await page.jQuery('.modal.open .modal-footer a:contains(Yes):visible');
         await elem.click();
+        await page.waitForNetworkIdle();
 
         await page.click('.segmentationContainer .title');
         expect(await page.screenshotSelector(selectorsToCapture + ',.modal.open')).to.matchImage('deleted');
