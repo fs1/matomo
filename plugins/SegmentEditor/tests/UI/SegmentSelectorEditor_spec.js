@@ -171,6 +171,7 @@ describe("SegmentSelectorEditorTest", function () {
         await page.evaluate(function () {
             $('button.saveAndApply').click();
         });
+        await page.waitForNetworkIdle();
         await page.waitFor(500); // animation to show confirm
 
         expect(await page.screenshotSelector('.modal.open')).to.matchImage('update_confirmation');
