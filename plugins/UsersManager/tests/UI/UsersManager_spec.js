@@ -60,9 +60,9 @@ describe("UsersManager", function () {
     });
 
     it('should select rows when individual row select is clicked', async function () {
-        await page.jQuery('td.select-cell label:eq(0)').click();
-        await page.jQuery('td.select-cell label:eq(3)').click();
-        await page.jQuery('td.select-cell label:eq(8)').click();
+        await (await page.jQuery('td.select-cell label:eq(0)')).click();
+        await (await page.jQuery('td.select-cell label:eq(3)')).click();
+        await (await page.jQuery('td.select-cell label:eq(8)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('rows_selected');
@@ -100,15 +100,15 @@ describe("UsersManager", function () {
         await page.click('.toggle-select-all-in-search'); // reselect all in search
 
         await page.click('.bulk-actions.btn');
-        await page.jQuery('#user-list-bulk-actions>li:first').hover();
-        await page.jQuery('#bulk-set-access a:contains(Admin)').click();
+        await (await page.jQuery('#user-list-bulk-actions>li:first')).hover();
+        await (await page.jQuery('#bulk-set-access a:contains(Admin)')).click();
 
         pageWrap = await page.$('.change-user-role-confirm-modal');
         expect(await pageWrap.screenshot()).to.matchImage('bulk_set_access_confirm');
     });
 
     it('should change access for all rows in search when confirmed', async function () {
-        await page.jQuery('.change-user-role-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.change-user-role-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('bulk_set_access');
@@ -118,8 +118,8 @@ describe("UsersManager", function () {
         await page.click('th.select-cell label'); // select displayed rows
 
         await page.click('.bulk-actions.btn');
-        await page.jQuery('#user-list-bulk-actions a:contains(Remove Permissions)').click();
-        await page.jQuery('.change-user-role-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('#user-list-bulk-actions a:contains(Remove Permissions)')).click();
+        await (await page.jQuery('.change-user-role-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('bulk_remove_access');
@@ -133,8 +133,8 @@ describe("UsersManager", function () {
     });
 
     it('should delete a single user when the modal is confirmed is clicked', async function () {
-        await page.jQuery('.deleteuser:eq(0)').click();
-        await page.jQuery('.delete-user-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.deleteuser:eq(0)')).click();
+        await (await page.jQuery('.delete-user-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('delete_single');
@@ -144,8 +144,8 @@ describe("UsersManager", function () {
         await page.click('th.select-cell label'); // select displayed rows
 
         await page.click('.bulk-actions.btn');
-        await page.jQuery('#user-list-bulk-actions a:contains(Delete Users)').click();
-        await page.jQuery('.delete-user-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('#user-list-bulk-actions a:contains(Delete Users)')).click();
+        await (await page.jQuery('.delete-user-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('delete_bulk_access');
@@ -164,7 +164,7 @@ describe("UsersManager", function () {
         await page.tyoe('#user_email', 'theuser@email.com');
 
         await page.click('piwik-user-edit-form .siteSelector a.title');
-        await page.jQuery('piwik-user-edit-form .siteSelector .custom_select_container a:eq(1)').click();
+        await (await page.jQuery('piwik-user-edit-form .siteSelector .custom_select_container a:eq(1)')).click();
 
         await page.click('piwik-user-edit-form [piwik-save-button]');
 
@@ -196,10 +196,10 @@ describe("UsersManager", function () {
 
     it('should add access to all websites when bulk access is used on all websites in search', async function () {
         await page.click('.userPermissionsEdit .bulk-actions > .dropdown-trigger.btn');
-        await page.jQuery('#user-permissions-edit-bulk-actions>li:first').hover();
-        await page.jQuery('#user-permissions-edit-bulk-actions a:contains(Write)').click();
+        await (await page.jQuery('#user-permissions-edit-bulk-actions>li:first')).hover();
+        await (await page.jQuery('#user-permissions-edit-bulk-actions a:contains(Write)')).click();
 
-        await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('permissions_all_sites_access');
@@ -214,16 +214,16 @@ describe("UsersManager", function () {
 
     it('should remove access to a single site when the trash icon is used', async function () {
         await page.click('#sitesForPermission .deleteaccess');
-        await page.jQuery('.delete-access-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.delete-access-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('permissions_remove_single');
     });
 
     it('should select multiple rows when individual row selects are clicked', async function () {
-        await page.jQuery('#sitesForPermission td.select-cell label:eq(0)').click();
-        await page.jQuery('#sitesForPermission td.select-cell label:eq(3)').click();
-        await page.jQuery('#sitesForPermission td.select-cell label:eq(8)').click();
+        await (await page.jQuery('#sitesForPermission td.select-cell label:eq(0)')).click();
+        await (await page.jQuery('#sitesForPermission td.select-cell label:eq(3)')).click();
+        await (await page.jQuery('#sitesForPermission td.select-cell label:eq(8)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('permissions_select_multiple');
@@ -231,10 +231,10 @@ describe("UsersManager", function () {
 
     it('should set access to selected sites when set bulk access is used', async function () {
         await page.click('.userPermissionsEdit .bulk-actions > .dropdown-trigger.btn');
-        await page.jQuery('#user-permissions-edit-bulk-actions>li:first').hover();
-        await page.jQuery('#user-permissions-edit-bulk-actions a:contains(Admin)').click();
+        await (await page.jQuery('#user-permissions-edit-bulk-actions>li:first')).hover();
+        await (await page.jQuery('#user-permissions-edit-bulk-actions a:contains(Admin)')).click();
 
-        await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('permissions_bulk_access_set');
@@ -259,10 +259,10 @@ describe("UsersManager", function () {
 
     it('should set access to all sites selected when set bulk access is used', async function () {
         await page.click('.userPermissionsEdit .bulk-actions > .dropdown-trigger.btn');
-        await page.jQuery('#user-permissions-edit-bulk-actions>li:first').hover();
-        await page.jQuery('#user-permissions-edit-bulk-actions a:contains(View)').click();
+        await (await page.jQuery('#user-permissions-edit-bulk-actions>li:first')).hover();
+        await (await page.jQuery('#user-permissions-edit-bulk-actions a:contains(View)')).click();
 
-        await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)')).click();
 
         await page.evaluate(function () { // remove filter
             $('.access-filter select').val('string:some').change();
@@ -277,7 +277,7 @@ describe("UsersManager", function () {
             $('.userPermissionsEdit tr select:eq(0)').val('string:admin').change();
         });
 
-        await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.change-access-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('permissions_single_site_access');
@@ -294,9 +294,9 @@ describe("UsersManager", function () {
         await page.click('.userPermissionsEdit tr.select-all-row a');
 
         await page.click('.userPermissionsEdit .bulk-actions > .dropdown-trigger.btn');
-        await page.jQuery('.userPermissionsEdit a:contains(Remove Permissions)').click();
+        await (await page.jQuery('.userPermissionsEdit a:contains(Remove Permissions)')).click();
 
-        await page.jQuery('.delete-access-confirm-modal .modal-close:not(.modal-no)').click();
+        await (await page.jQuery('.delete-access-confirm-modal .modal-close:not(.modal-no)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('permissions_remove_access');
@@ -336,7 +336,7 @@ describe("UsersManager", function () {
     });
 
     it('should show the edit user form when the edit icon in a row is clicked', async function () {
-        await page.jQuery('button.edituser:eq(0)').click();
+        await (await page.jQuery('button.edituser:eq(0)')).click();
 
         pageWrap = await page.$('.admin#content');
         expect(await pageWrap.screenshot()).to.matchImage('edit_user_form');
@@ -382,7 +382,7 @@ describe("UsersManager", function () {
             await page.evaluate(function () {
                 $('.userEditForm .entityCancelLink').click();
             });
-            await page.jQuery('button.edituser:eq(0)').click();
+            await (await page.jQuery('button.edituser:eq(0)')).click();
 
             pageWrap = await page.$('.admin#content');
             expect(await pageWrap.screenshot()).to.matchImage('edit_user_basic_info');
@@ -408,7 +408,7 @@ describe("UsersManager", function () {
 
         it('should add a user by email when an email is entered', async function () {
             await page.type('input[name="add-existing-user-email"]', '0_login3conchords@example.com');
-            await page.jQuery('.add-existing-user-modal .modal-close:not(.modal-no)').click();
+            await (await page.jQuery('.add-existing-user-modal .modal-close:not(.modal-no)')).click();
 
             await page.evaluate(function () { // show new user
                 $('#user-text-filter').val('0_login3conchords@example.com').change();
@@ -421,7 +421,7 @@ describe("UsersManager", function () {
         it('should add a user by username when a username is entered', async function () {
             await page.click('.add-existing-user');
             await page.type('input[name="add-existing-user-email"]', '10_login8');
-            await page.jQuery('.add-existing-user-modal .modal-close:not(.modal-no)').click();
+            await (await page.jQuery('.add-existing-user-modal .modal-close:not(.modal-no)')).click();
 
             await page.evaluate(function () { // show new user
                 $('#user-text-filter').val('10_login8').change();
@@ -434,7 +434,7 @@ describe("UsersManager", function () {
         it('should fail if an email/username that does not exist is entered', async function () {
             await page.click('.add-existing-user');
             await page.type('input[name="add-existing-user-email"]', 'sldkjfsdlkfjsdkl');
-            await page.jQuery('.add-existing-user-modal .modal-close:not(.modal-no)').click();
+            await (await page.jQuery('.add-existing-user-modal .modal-close:not(.modal-no)')).click();
 
             await page.evaluate(function () { // show no user added
                 $('#user-text-filter').val('sldkjfsdlkfjsdkl').change();
